@@ -66,4 +66,56 @@ const task_one = () => {
   outputNumberDetails(num)
 }
 
+// Task 2
+const checkValidSymbols = (symbols) => {
+  return /^\S{1,3}$/.test(symbols)
+}
+
+const checkValidNumber = (num) => {
+  return isValidNumber(num) && num < 10
+}
+
+const promptForSymbols = () => {
+  while (true) {
+    const symbols = prompt('Input one to three characters')
+    if (checkValidSymbols(symbols)) {
+      return symbols
+    }
+    console.log('Incorrect input!')
+  }
+}
+
+const promptForNumber = () => {
+  while (true) {
+    const num = prompt('Input any nymber from 1 to 10')
+    if (checkValidNumber(num)) {
+      return num
+    }
+    console.log('Incorrect input!')
+  }
+}
+
+const formatOutput = (symbols, num) => {
+  let output = ''
+  for (let i = 0; i < num; i++) {
+    for (let j = 0; j < num; j++) {
+      output += `${symbols}`
+      if (j === num - 1) {
+        output += '\n'
+      } else {
+        output += ' '
+      }
+    }
+  }
+  return output
+}
+
+const task_two = () => {
+  const symbols = promptForSymbols()
+  const num = promptForNumber()
+  const output = formatOutput(symbols, num)
+  console.log(output)
+}
+
 task_one()
+task_two()
