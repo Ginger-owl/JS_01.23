@@ -1,12 +1,12 @@
 // Task 1
-const isValidNumber = (value) => {
+const checkValidNumber = (value) => {
   return /^\d+$/.test(value) && value > 0 && isFinite(value)
 }
 
 const promptNumber = () => {
   while (true) {
-    const number = prompt('Input number...')
-    if (isValidNumber(number)) {
+    const number = prompt('Input number...').trim()
+    if (checkValidNumber(number)) {
       return +number
     }
     console.log('Incorrect input!')
@@ -52,7 +52,8 @@ const isEven = (num) => {
 }
 
 const outputNumberDetails = (num) => {
-  console.log(`Number: ${num}
+  console.log(
+`Number: ${num}
 Factorial: ${calculateFactorial(num)}
 Square: ${calculateSquare(num)}
 isPrime: ${isPrime(num)}
@@ -61,23 +62,19 @@ Delimeters: ${findDelimeters(num).join(', ')}`)
 }
 
 
-const task_one = () => {
+const taskOne = () => {
   const num = promptNumber()
   outputNumberDetails(num)
 }
 
 // Task 2
 const checkValidSymbols = (symbols) => {
-  return /^\S{1,3}$/.test(symbols)
-}
-
-const checkValidNumber = (num) => {
-  return isValidNumber(num) && num < 10
+  return /^\S.?\S?$/.test(symbols)
 }
 
 const promptForSymbols = () => {
   while (true) {
-    const symbols = prompt('Input one to three characters')
+    const symbols = prompt('Input one to three characters').trim()
     if (checkValidSymbols(symbols)) {
       return symbols
     }
@@ -87,9 +84,9 @@ const promptForSymbols = () => {
 
 const promptForNumber = () => {
   while (true) {
-    const num = prompt('Input any nymber from 1 to 10')
-    if (checkValidNumber(num)) {
-      return num
+    const num = prompt('Input any digit from 1 to 9 (including)').trim()
+    if (checkValidNumber(num) && num < 10) {
+      return +num
     }
     console.log('Incorrect input!')
   }
@@ -110,12 +107,12 @@ const formatOutput = (symbols, num) => {
   return output
 }
 
-const task_two = () => {
+const taskTwo = () => {
   const symbols = promptForSymbols()
   const num = promptForNumber()
   const output = formatOutput(symbols, num)
   console.log(output)
 }
 
-task_one()
-task_two()
+taskOne()
+taskTwo()
