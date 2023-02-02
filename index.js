@@ -18,3 +18,32 @@ function makeDeepCopy (obj) {
     return object != null && typeof object === 'object';
   }
 }
+
+
+// Task 2
+function selectFromInterval(arr, firstInterval, secondInterval) {
+  if (
+    !Array.isArray(arr) ||
+    !onlyValidNumbers(arr) ||
+    !checkValidNumber(firstInterval) ||
+    !checkValidNumber(secondInterval)
+   ) {
+    throw new Error ()
+  }
+  if (firstInterval > secondInterval) {
+    return arr.filter((el) => el >= secondInterval && el <= firstInterval)
+  } else {
+    return arr.filter((el) => el >= firstInterval && el <= secondInterval)
+  }
+
+  function onlyValidNumbers(array) {
+    return array.every((el) => {
+      return checkValidNumber(el)
+    })
+  }
+
+  function checkValidNumber(value) {
+    return typeof value === 'number' && isFinite(value)
+  }
+}
+
