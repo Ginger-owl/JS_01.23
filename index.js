@@ -3,19 +3,19 @@ function makeDeepCopy (obj) {
   if (!isObject(obj)) {
     throw new Error()
   }
-  const clone = {};
+  const clone = {}
 
   for (const key in obj) {
     if (isObject(obj[key])) {
       clone[key] = makeDeepCopy(obj[key])
     } else {
-      clone[key] = obj[key];
+      clone[key] = obj[key]
     }
   }
   return clone
 
   function isObject(object) {
-    return object != null && typeof object === 'object';
+    return object != null && typeof object === 'object'
   }
 }
 
@@ -47,3 +47,37 @@ function selectFromInterval(arr, firstInterval, secondInterval) {
   }
 }
 
+// Task 3
+function createIterable(from, to) {
+  if (
+    !checkValidNumber(from) ||
+    !checkValidNumber(to) ||
+    to <= from
+    ) {
+      throw new Error()
+    }
+  const iterObj = {
+    from: from,
+    to: to
+  }
+
+  iterObj[Symbol.iterator] = function () {
+    return {
+      current: this.from,
+      last: this.to,
+
+      next() {
+        if (this.current <= this.last) {
+          return {done: false, value: this.current++}
+        } else {
+          return {done: true}
+        }
+      }
+    }
+  }
+  return iterObj
+
+  function checkValidNumber(value) {
+    return typeof value === 'number' && isFinite(value)
+  }
+}
