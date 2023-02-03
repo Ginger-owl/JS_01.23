@@ -7,12 +7,42 @@ function makeDeepCopy (obj) {
 
   for (const key in obj) {
     if (isObject(obj[key])) {
-      clone[key] = makeDeepCopy(obj[key])
+      if (obj[key] instanceof Map) {
+        clone[key] = copyMap(obj[key])
+      } else if (obj[key] instanceof Set) {
+        clone[key] = copySet(obj[key])
+      } else if (obj[key] instanceof Date) {
+        clone[key] = copyDate(obj[key])
+      } else {
+        clone[key] = makeDeepCopy(obj[key])
+      }
     } else {
       clone[key] = obj[key]
     }
   }
   return clone
+
+  function copyMap(map) {
+    const clonedMap = new Map()
+
+    for (const entry of map) {
+      clonedMap.set(...entry)
+    }
+    return clonedMap
+  }
+
+  function copyDate(date) {
+    return new Date(date.getTime())
+  }
+
+  function copySet(set) {
+    const clonedSet = new Set()
+
+    for (const entry of set) {
+      clonedSet.add(entry)
+    }
+    return clonedSet
+  }
 
   function isObject(object) {
     return object != null && typeof object === 'object'
