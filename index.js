@@ -54,6 +54,7 @@ function makeDeepCopy (obj) {
 function selectFromInterval(arr, firstInterval, secondInterval) {
   if (
     !Array.isArray(arr) ||
+    arr.length === 0 ||
     !onlyValidNumbers(arr) ||
     !checkValidNumber(firstInterval) ||
     !checkValidNumber(secondInterval)
