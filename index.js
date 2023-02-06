@@ -3,8 +3,12 @@ function makeDeepCopy (obj) {
   if (!isObject(obj)) {
     throw new Error()
   }
-  const clone = {}
+  
+  if (Array.isArray(obj)) {
+    return copyArray(obj)
+  }
 
+  const clone = {}
   for (const key in obj) {
     if (isObject(obj[key])) {
       if (obj[key] instanceof Map) {
@@ -21,6 +25,21 @@ function makeDeepCopy (obj) {
     }
   }
   return clone
+
+
+  function copyArray(arr) {
+    const clonedArr = new Array()
+
+    for (const value of arr) {
+      if (!isObject(value)) {
+        clonedArr.push(value);
+      } else {
+        clonedArr.push(makeDeepCopy(value));
+      }
+    }
+    return clonedArr;
+  }
+  
 
   function copyMap(map) {
     const clonedMap = new Map()
