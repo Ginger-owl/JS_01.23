@@ -51,4 +51,45 @@ class Calculator {
 }
 
 // Task 3
+class RickAndMorty {
+  constructor() {
+  }
 
+  getCharacter(id) {
+    if (!id || typeof id === 'bigint' || !isFinite(id)) {
+      throw new Error ()
+    }
+    return new Promise((resolve, reject) => {
+      fetch(`https://rickandmortyapi.com/api/character/${id}`)
+        .then((res) => {
+          return res.json()
+        })
+        .then((characterData) => {
+          if (characterData.error) {
+            resolve(null)
+          } else {
+            resolve(characterData)
+          }
+        })
+        .catch((e) => {
+          reject(e)
+        })
+    })
+  }
+  
+  async getEpisode(id) {
+    if (!id || typeof id === 'bigint' || !isFinite(id)) {
+      throw new Error ()
+    }
+    try {
+      const res = await fetch(`https://rickandmortyapi.com/api/episode/${id}`)
+      const episodeData = await res.json()
+      if (episodeData.error) {
+        return null
+      }
+      return episodeData
+    } catch (err) {
+      return null
+    }   
+  }
+}
