@@ -70,3 +70,75 @@ class Stack {
     return newStack
   }
 }
+
+// Task 2 - LinkedList
+class LinkedList {
+  constructor() {
+    this.head = null
+  }
+
+  append(elem) {
+    const newNode = this.#transformElemToNode(elem)
+    let node = this.head
+    if (node == null) {
+      this.head = newNode
+      return
+    }
+    while (node.next != null) {
+      node = node.next
+    }
+    node.next = newNode
+  }
+
+  prepend(elem) {
+    const newNode = this.#transformElemToNode(elem)
+    let node = this.head
+    if (node == null) {
+      this.head = newNode
+      return
+    }
+    newNode.next = this.head
+    this.head = newNode
+  }
+
+  find(elem) {
+    let node = this.head
+    while (!(node == null)) {
+      if (node.data === elem) {
+        return node
+      }
+      node = node.next
+    }
+    return null
+  }
+
+  toArray() {
+    const arr = []
+    let node = this.head
+    while (node != null) {
+      arr.push(node.data)
+      node = node.next
+    }
+    return arr
+  }
+
+  #transformElemToNode(elem) {
+    const nodeObj = new Object()
+    nodeObj.data = elem
+    nodeObj.next = null
+    return nodeObj
+  }
+
+  static fromIterable(iterable) {
+    if (iterable == null || typeof Object(iterable[Symbol.iterator]) !== 'function') {
+      throw new Error('Not iterable')
+    }
+   
+    const newLinkedList = new LinkedList(iterable.length)
+    for (let i = 0; i < iterable.length; i++) {
+      newLinkedList.append(iterable[i])
+    }
+
+    return newLinkedList
+  }
+}
