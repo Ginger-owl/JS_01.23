@@ -45,7 +45,6 @@ class Calculator {
   }
 
   #checkValidNumber = (num) => {
-    console.log(typeof num)
     return typeof num !== 'bigint' && typeof num === 'number' && isFinite(num)
   }
 }
