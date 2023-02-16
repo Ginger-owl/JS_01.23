@@ -153,8 +153,9 @@ class Car {
   #MAX_MANUFACTURING_YEAR = new Date().getFullYear()
   #MIN_SPEED = 100
   #MAX_SPEED = 330
-  #MIN_FUEL_VOLUME = 100
+  #MIN_FUEL_VOLUME = 20
   #MAX_FUEL_VOLUME = 100
+  #MIN_REFUEL_VOLUME = 0
   #MIN_FUEL_CONSUMPTION = 0
   #MIN_DAMAGE = 1
   #MAX_DAMAGE = 5
@@ -201,7 +202,7 @@ class Car {
 
   set yearOfManufacturing(value) {
     if (
-      this.#isValidInteger(value) ||
+      !this.#isValidInteger(Number(value)) ||
       value < this.#MIN_MANUFACTURING_YEAR ||
       value > this.#MAX_MANUFACTURING_YEAR
       ) {
@@ -216,7 +217,7 @@ class Car {
 
   set maxSpeed(value) {
     if (
-      this.#isValidNumber(value) ||
+      !this.#isValidNumber(Number(value)) ||
       value < this.#MIN_SPEED ||
       value > this.#MAX_SPEED
       ) {
@@ -231,7 +232,7 @@ class Car {
 
   set maxFuelVolume(value) {
     if (
-      this.#isValidNumber(value) ||
+      !this.#isValidNumber(Number(value)) ||
       value < this.#MIN_FUEL_VOLUME ||
       value > this.#MAX_FUEL_VOLUME
       ) {
@@ -246,7 +247,7 @@ class Car {
 
   set fuelConsumption(value) {
     if (
-      this.#isValidNumber(value) ||
+      !this.#isValidNumber(Number(value)) ||
       value < this.#MIN_FUEL_CONSUMPTION
       ) {
         throw new Error('Invalid fuel consumption')
@@ -260,7 +261,7 @@ class Car {
 
   set damage(value) {
     if (
-      this.#isValidNumber(value) ||
+      !this.#isValidNumber(Number(value)) ||
       value < this.#MIN_DAMAGE ||
       value > this.#MAX_DAMAGE
       ) {
@@ -300,7 +301,7 @@ class Car {
   }
 
   fillUpGasTank(volume) {
-    if (!this.#isValidNumber(volume)) {
+    if (!this.#isValidNumber(Number(volume)) || volume < this.#MIN_REFUEL_VOLUME) {
       throw new Error ('Invalid fuel amount')
     } else if (this.#maxFuelVolume < this.#currentFuelVolume + volume) {
       throw new Error ('Too much fuel')
@@ -311,10 +312,10 @@ class Car {
   }
 
   drive(speed, hours) {
-    if (!this.#isValidNumber(speed) || speed <= 0) {
+    if (!this.#isValidNumber(Number(speed)) || speed <= 0) {
       throw new Error ('Invalid speed')
     }
-    if (!this.#isValidNumber(hours) || hours <= 0) {
+    if (!this.#isValidNumber(Number(hours)) || hours <= 0) {
       throw new Error ('Invalid duration')
     }
     if (speed > this.#maxSpeed) {
@@ -366,3 +367,55 @@ class Car {
     return /^\d+$/.test(value) && typeof value === 'number' && isFinite(value)
   }
 }
+
+
+const myCar = new Car()
+console.log(myCar)
+for (key in myCar) {
+  console.log(key)
+}
+console.log('before brand', myCar.brand)
+myCar.brand = 'Mercedes'
+console.log('after brand', myCar.brand)
+console.log('before model', myCar.model)
+myCar.model = 'SKL 600'
+console.log('after model', myCar.model)
+console.log('before yearOfManufacturing', myCar.yearOfManufacturing)
+myCar.yearOfManufacturing = 1950
+console.log('after yearOfManufacturing', myCar.yearOfManufacturing)
+console.log('init fuelConsumption', myCar.fuelConsumption)
+console.log('before model', myCar.maxSpeed)
+myCar.maxSpeed = 315
+console.log('after model', myCar.maxSpeed)
+
+console.log('init damage', myCar.damage)
+myCar.damage = 4.999999
+console.log('init fuelVolume', myCar.currentFuelVolume)
+console.log('init isStarted', myCar.isStarted)
+console.log('init mileage', myCar.mileage)
+console.log('init health', myCar.health)
+
+const neededFuelInit = myCar.getFullAmount()
+console.log(neededFuelInit)
+
+myCar.start()
+myCar.shutDownEngine()
+
+myCar.fillUpGasTank(10)
+myCar.start()
+console.log('1st ride')
+
+myCar.drive(315, 2)
+const afterRideFuelAmount = myCar.getFullAmount()
+console.log(afterRideFuelAmount)
+
+
+
+console.log('after fuelConsumption', myCar.fuelConsumption)
+console.log('after damage', myCar.damage)
+console.log('after fuelVolume', myCar.currentFuelVolume)
+console.log('after isStarted', myCar.isStarted)
+console.log('after mileage', myCar.mileage)
+console.log('after health', myCar.health)
+
+console.log('2nd ride')
