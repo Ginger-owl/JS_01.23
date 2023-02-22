@@ -45,11 +45,11 @@ class Calculator {
     )
   }
 
-  renderDisplay = () => {
+  #renderDisplay = () => {
     document.getElementById("screen").value = this.displayedValue
   }
 
-  removeChosenOperatorStatus = () => {
+  #removeChosenOperatorStatus = () => {
     const buttons = document.getElementsByClassName("calculator__button")
       for(let i = 0; i < buttons.length; i++) {
         if (buttons[i].classList.contains("button-chosen")) {
@@ -58,7 +58,7 @@ class Calculator {
       }
   }
 
-  setNumber = (num) => {
+  #setNumber = (num) => {
     if (this.firstNumberChosen) {
       if (this.secondNumber === 0) {
         this.secondNumber = num
@@ -68,7 +68,7 @@ class Calculator {
         }
         this.secondNumber = String(this.secondNumber) + num
       }
-      this.setDisplayedValue(this.secondNumber)
+      this.#setDisplayedValue(this.secondNumber)
     } else {
       if (this.firstNumber === 0 || this.firstNumber === this.result) {
         this.firstNumber = num
@@ -78,11 +78,11 @@ class Calculator {
         }
         this.firstNumber = String(this.firstNumber) + num
       }
-      this.setDisplayedValue(this.firstNumber)
+      this.#setDisplayedValue(this.firstNumber)
     }
   }
 
-  setDisplayedValue = (value) => {
+  #setDisplayedValue = (value) => {
     if (value === "0") {
       this.displayedValue = "0"
     } else {
@@ -104,14 +104,14 @@ class Calculator {
         this.displayedValue = String(value)
       }
     }
-    this.renderDisplay()
+    this.#renderDisplay()
   }
 
 
-  calculate = () => {
+  #calculate = () => {
     if (this.firstNumberChosen) {
       this.result = this.operator()
-      this.removeChosenOperatorStatus()
+      this.#removeChosenOperatorStatus()
       if (this.result === "Not a number") {
         this.firstNumber = 0
       } else {
@@ -119,76 +119,72 @@ class Calculator {
       }
       this.secondNumber = 0
       this.operator = null
-      this.setDisplayedValue(this.result)
+      this.#setDisplayedValue(this.result)
     }
     this.firstNumberChosen = false
   }
 
-  prepareOperation = (operation) => {
+  #prepareOperation = (operation) => {
     if (!this.firstNumberChosen) {
       this.firstNumberChosen= true
     }
     if (this.operator != null) {
       this.result = this.operator()
-      this.removeChosenOperatorStatus()
+      this.#removeChosenOperatorStatus()
       if (this.result === "Not a number") {
         this.firstNumber = 0
       } else {
         this.firstNumber = this.result
       }
       this.secondNumber = 0
-      this.setDisplayedValue(this.result)
+      this.#setDisplayedValue(this.result)
     }
     this.operator = operation
   }
 
-  clear = () => {
+  #clear = () => {
     this.firstNumber = 0
     this.secondNumber = 0
     this.operator = null
-    this.removeChosenOperatorStatus()
+    this.#removeChosenOperatorStatus()
     this.firstNumberChosen = false
-    this.setDisplayedValue(this.firstNumber)
+    this.#setDisplayedValue(this.firstNumber)
   }
 
-  delete = () => {
+  #delete = () => {
     if (this.firstNumberChosen) {
       this.secondNumber = Number(String(this.secondNumber).slice(0, -1))
-      this.setDisplayedValue(this.secondNumber)
+      this.#setDisplayedValue(this.secondNumber)
     } else {
       this.firstNumber = Number(String(this.firstNumber).slice(0, -1))
-      this.setDisplayedValue(this.firstNumber)
+      this.#setDisplayedValue(this.firstNumber)
     }
   }
 
-  negate = () => {
+  #negate = () => {
     if (this.firstNumberChosen) {
       this.secondNumber = -this.secondNumber
-      this.setDisplayedValue(this.secondNumber)
+      this.#setDisplayedValue(this.secondNumber)
     } else {
       this.firstNumber = -this.firstNumber
-      this.setDisplayedValue(this.firstNumber)
+      this.#setDisplayedValue(this.firstNumber)
     }
   }
 
-  power = () => {
-    return Math.pow(this.firstNumber, Number(this.secondNumber))
-  }
-
-  sum = () => {
+  #sum = () => {
     return Number(this.firstNumber) + Number(this.secondNumber)
   }
 
-  substract = () => {
+  #substract = () => {
     return Number(this.firstNumber) - Number(this.secondNumber)
   }
   
 
-  multiply = () => {
+  #multiply = () => {
     return Number(this.firstNumber) * Number(this.secondNumber)
   }
   
-  divide = () => {
+  #divide = () => {
     if (this.secondNumber != 0) {
       return Number(this.firstNumber) / Number(this.secondNumber)
     } else {
@@ -200,63 +196,57 @@ class Calculator {
     const calculatorControls = document.getElementById("calculator__controls")
     calculatorControls.addEventListener("click", (e) => {
       if (e.target.classList.contains("button-num") || e.target.classList.contains("button-dot")) {
-        this.setNumber(e.target.textContent)
+        this.#setNumber(e.target.textContent)
       } else if (e.target.classList.contains("button-clear")) {
-        this.clear()
+        this.#clear()
       } else if (e.target.classList.contains("button-delete")) {
-        this.delete()
+        this.#delete()
       } else if (e.target.classList.contains("button-negate")) {
-        this.negate()
+        this.#negate()
       } else if (e.target.classList.contains("button-equals")) {
-        this.calculate()
+        this.#calculate()
       } else if (e.target.classList.contains("button-sum")) {
-        this.prepareOperation(this.sum)
+        this.#prepareOperation(this.#sum)
         e.target.classList.add("button-chosen")
       } else if (e.target.classList.contains("button-substract")) {
-        this.prepareOperation(this.substract)
+        this.#prepareOperation(this.#substract)
         e.target.classList.add("button-chosen")
       } else if (e.target.classList.contains("button-multiply")) {
-        this.prepareOperation(this.multiply)
+        this.#prepareOperation(this.#multiply)
         e.target.classList.add("button-chosen")
       } else if (e.target.classList.contains("button-divide")) {
-        this.prepareOperation(this.divide)
-        e.target.classList.add("button-chosen")
-      } else if (e.target.classList.contains("button-power")) {
-        this.prepareOperation(this.power)
+        this.#prepareOperation(this.#divide)
         e.target.classList.add("button-chosen")
       }
     })
 
     window.addEventListener("keydown", (e) => {
       if (/^[\d|\.]$/.test(e.key)) {
-        this.setNumber(e.key)
+        this.#setNumber(e.key)
+      }  else if (e.key === "Backspace" && e.ctrlKey) {
+        this.#clear()
+      } else if (e.key === "Backspace") {
+        this.#delete()
+      } else if (e.key === "-" && e.ctrlKey) {
+        this.#negate()
+      } else if (e.key === "Enter" || e.key === "=") {
+        this.#calculate()
       } else if (e.key === "+") {
-        this.prepareOperation(this.sum)
+        this.#prepareOperation(this.#sum)
         document.querySelector(".button-sum").classList.add("button-chosen")
       } else if (e.key === "-") {
-        this.prepareOperation(this.substract)
+        this.#prepareOperation(this.#substract)
         document.querySelector(".button-substract").classList.add("button-chosen")
       } else if (e.key === "*") {
-        this.prepareOperation(this.multiply)
+        this.#prepareOperation(this.#multiply)
         document.querySelector(".button-multiply").classList.add("button-chosen")
       } else if (e.key === "/") {
-        this.prepareOperation(this.divide)
+        this.#prepareOperation(this.#divide)
         document.querySelector(".button-divide").classList.add("button-chosen")
-      } else if (e.key === "^") {
-        this.prepareOperation(this.power)
-        document.querySelector(".button-power").classList.add("button-chosen")
-      } else if (e.key === "Backspace" && e.ctrlKey) {
-        this.clear()
-      } else if (e.key === "Backspace") {
-        this.delete()
-      } else if (e.key === "-" && e.ctrlKey) {
-        this.negate()
-      } else if (e.key === "Enter" || e.key === "=") {
-        this.calculate()
       }
     })
-    
   }
+
 }
 
 const calculator = new Calculator()
